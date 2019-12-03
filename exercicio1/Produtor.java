@@ -12,27 +12,21 @@ public class Produtor implements Runnable{
     
     public Produtor(Pipe.SinkChannel sinkChannel){
         this.sinkChannel = sinkChannel;
-        buf = ByteBuffer.allocate(128);
+        buf = ByteBuffer.allocate(20);
         buf.clear();
     }
 
     @Override
     public void run() {
-        //String s = Long.toString(Thread.currentThread().getId());
-        System.out.println("Produtor " + Thread.currentThread().getId() + " produziu: " + Thread.currentThread().getId());
-        buf.flip();
+        buf.putInt((int) Thread.currentThread().getId());
+        buf.rewind();
         while(buf.hasRemaining()){
             try {
                 sinkChannel.write(buf);
+                System.out.println("Produtor " + Thread.currentThread().getId() + " produziu: " + Thread.currentThread().getId());
             } catch (IOException ex) {
                 Logger.getLogger(Produtor.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        try {
-            System.in.read();
-        } catch (IOException ex) {
-            Logger.getLogger(Produtor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }    
 }

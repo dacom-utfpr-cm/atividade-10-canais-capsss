@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Carlos Alexandre Peron dos Santos
+ *
+ * Implementar o problema do produtor-consumidor usando Java NIO: Pipe, Pipe.SinkChannel e Pipe.SourceChannel.
  */
 package exercicio1;
 
@@ -14,14 +14,17 @@ public class Exercicio1 {
         Pipe pipe = Pipe.open();
         Pipe.SinkChannel sinkChannel  = pipe.sink();
         Pipe.SourceChannel sourceChannel = pipe.source();
+        
+        int quantosProdutores = 5;
+        int quantosConsumidores = 5;
 
         Thread t;
-        for(int i=0; i<1; i++){
+        for(int i=0; i<quantosProdutores; i++){
             t = new Thread(new Produtor(sinkChannel));
             t.start();
         }
         
-        for(int i=0; i<1; i++){
+        for(int i=0; i<quantosConsumidores; i++){
             t = new Thread(new Consumidor(sourceChannel));
             t.start();
         }

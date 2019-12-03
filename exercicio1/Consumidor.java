@@ -12,17 +12,15 @@ public class Consumidor implements Runnable{
     
     public Consumidor(Pipe.SourceChannel sourceChannel){
         this.sourceChannel = sourceChannel;
-        buf = ByteBuffer.allocate(128);
+        buf = ByteBuffer.allocate(20);
     }
 
     @Override
     public void run() {
         try {
-            int bytesRead = sourceChannel.read(buf);
-            //int x = buf.getInt();
-            int y = buf.get();
-            //buf.get(bytes);
-            System.out.println("Consumidor " + Thread.currentThread().getId() + " consumiu: " + y);
+            sourceChannel.read(buf);
+            buf.rewind();
+            System.out.println("Consumidor " + Thread.currentThread().getId() + " consumiu: " + buf.getInt());
         } catch (IOException ex) {
             Logger.getLogger(Consumidor.class.getName()).log(Level.SEVERE, null, ex);
         }
